@@ -1,0 +1,10 @@
+# @package _global_
+
+model:
+  downscale_ratio: 16
+  image_vocab_size: 16384
+  vae_type: VQ-16
+  use_custom_vae_ckpt: ${get_repo_dir:}/ckpts/vq_ds16_t2i.pt
+  custom_vae_name: _t2i
+  codebook_embed_dim: 8
+  img_length: ${eval:'(${data.resolution} // ${model.downscale_ratio})**2'}

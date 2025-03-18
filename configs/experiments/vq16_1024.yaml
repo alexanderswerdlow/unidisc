@@ -1,0 +1,8 @@
+# @package _global_
+
+model:
+  downscale_ratio: 16
+  image_vocab_size: 1024
+  codebook_embed_dim: 256
+  vae_type: VQ-16
+  use_custom_vae_ckpt: ${oc.env:DIFFUSION_DATA_DIR}/ckpts/2024-07-03-01-10-53_022-VQ-16_0042000.pt

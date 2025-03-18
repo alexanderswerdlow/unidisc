@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: hydra-submitit-launcher
+Version: 1.4.0.dev0
+Summary: Submitit Launcher for Hydra apps
+Home-page: https://github.com/facebookincubator/submitit
+Author: Jeremy Rapin, Jieru Hu, Omry Yadan
+Author-email: jrapin@fb.com, jieru@fb.com, omry@fb.com
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Development Status :: 4 - Beta
+Description-Content-Type: text/markdown
+Requires-Dist: hydra-core>=1.1.0.dev7
+Requires-Dist: submitit>=1.3.3

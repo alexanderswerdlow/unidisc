@@ -1,0 +1,26 @@
+# @package _global_
+
+mode: eval
+
+sampling:
+  steps: 100
+  max_sampling_steps: 100
+
+loader:
+  batch_size: 2
+  eval_batch_size: 2
+
+trainer:
+  fsdp: false
+
+eval:
+  perplexity_batch_size: 2
+  num_masking_viz_batches: 2
+  log_every_n_evals: 1
+  num_uncond_sample_batches: 2
+  num_sample_batches: 2
+  num_random_masking: 1
+  masking_batch_size: 2
+  cfg: null
+  generate_samples: true
+  compute_generative_perplexity: false

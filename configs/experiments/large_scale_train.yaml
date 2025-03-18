@@ -1,0 +1,151 @@
+# @package _global_
+
+defaults:
+  - vq16_t2i
+  - override /model: extra_large
+
+data:
+  train: combined_tokens
+  valid: ${.train}
+  precache: false
+  streaming: false
+  resolution: 256
+  block_size: 128
+  tokenizer_name_or_path: NousResearch/Llama-2-7b-hf
+  wrap: true
+  iterable: false
+  webdataset_iterable: false
+  webdataset_indexed: false
+  unpaired: false
+  dataset_type: null
+  tokens_flip_collate: false
+  n_val_samples: null
+  n_train_samples: null
+  n_duplicate_train: null
+  n_duplicate_val: null
+  raw_data_dir: null
+  save_train_dataloader: true
+  save_validation_dataloader: true
+  tokenizers_parallelism: false
+  token_data_dir: null
+  force_disable_shuffle: false
+  use_custom_tensordict_collate: true
+  use_weighted_tensordict_sampler: true
+  force_mp_spawn: false
+  enable_cuda_in_tensordict_collate: false
+  use_token_dataset: true
+  keep_tensordict_on_disk: true
+  move_tensordict_to_shm: false
+  add_text_to_weighted_sampler: false
+  data_dir_train:
+  # - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/matrix/HPDv2_image_reward_v1_v2_v3/train
+  #   weight: 15.0
+  #   name: hpdv2
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/pixelprose_tokens
+    weight: 1.0
+    name: pixelprose
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/journeydb_train
+    weight: 10.0
+    name: journeydb_train
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_0_tokens
+    weight: 1.0
+    name: datacomp0
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_1_tokens
+    weight: 1.0
+    name: datacomp1
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_2_tokens
+    weight: 1.0
+    name: datacomp2
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_3_tokens
+    weight: 1.0
+    name: datacomp3
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_4_tokens
+    weight: 1.0
+    name: datacomp4
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_5_tokens
+    weight: 1.0
+    name: datacomp5
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_6_tokens
+    weight: 1.0
+    name: datacomp6
+  data_dir_val:
+  - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/pixelprose_tokens
+    weight: 1.0
+    name: dummy_1
+
+model:
+  img_length: ${eval:'(${data.resolution} // ${model.downscale_ratio})**2'}
+  txt_length: ${eval:'${data.block_size} if ${.unified_model} else 0'}
+  length: ${eval:'${.txt_length} + ${.img_length}'}
+  unified_model: true
+  image_model: true
+  text_model: true
+  image_model_fid_eval: false
+  force_argmax_valid_indices: true
+  use_pretrained_img_emb: false
+  rope_2d: true
+  modality_embed: true
+  norm_type: rms
+  qk_norm: true
+  sandwich_normalization: true
+  text_vocab_size: 32001
+  
+loader:
+  batch_size: 8
+  eval_batch_size: ${eval:'${.batch_size} // 2'}
+  desired_global_batch_size: 512
+  persistent_workers: true
+  pin_memory: false
+  num_workers: 0
+  num_eval_workers: 0
+eval:
+  log_every_n_evals: -1
+  log_every_n_fid: -1
+  limit_val_batches_manual: 16
+  generate_samples: true
+  compute_generative_perplexity: false
+  perplexity_batch_size: ${loader.eval_batch_size}
+  cfg: 5.0
+  num_val_metrics_standalone_samples: -1
+  num_val_metrics_standalone_batches_per_device: -1
+  auto_enhance_reward_config:
+    dfn_score: 1.0
+    laion_aesthetic_score: 1.0
+    
+trainer:
+  log_flops: false
+  log_every_n_steps: 10
+  custom_ddp_bf16: true
+  log_seperate_modal_losses: true
+  limit_val_batches: 16
+  softmin_snr: 5
+  text_loss_weight: 1.0
+  img_loss_weight: 0.6
+  use_gradient_checkpointing: false
+  ckpt_steps: 20000
+  ckpt_every_n_minutes: 180
+  ckpt_recent_timeout_minutes: 10
+  use_custom_ema: false
+  ema: 0.0
+  fsdp: true
+  restart_on_failure: true
+  eval_on_start: false
+  val_check_interval: 100000000000
+  scale_lr_by_batch_size: false
+  watch_gradients: false
+  compile: true
+  mask_entire_modality: 0.15
+  compile_flag_pos_emb: true
+  multimodal_batches: true
+optim:
+  lr: 0.0001
+sampling:
+  steps: 128
+  num_sample_batches: 2
+wandb:
+  mode: online
+checkpointing:
+  checkpoints_total_limit: 10
+  use_automatic_naming: false
+lr_scheduler:
+  num_warmup_steps: 10000

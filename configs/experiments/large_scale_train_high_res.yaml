@@ -1,0 +1,39 @@
+
+# @package _global_
+
+data:
+  resolution: 512
+  data_dir_train:
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/matrix/HPDv2_image_reward_v1_v2_v3/train
+      weight: 1
+      name: HPDv2_image_reward_512
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/grogu/pick_score_sac_prompts_v1_v2_v3_512
+      weight: 2
+      name: pick_score_sac_prompts_v1_v2_v3_512
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/scratch_ssd_tokens/datacomp1b_7_512
+      weight: 0.5
+      name: datacomp1b_7_512
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/grogu/text/slimpajama6b
+      weight: 2.5
+      name: slimpajama6b
+  data_dir_val:
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/matrix/gecko_eval_512
+      weight: 1.0
+      name: gecko_eval_512
+
+trainer:
+  text_loss_weight: 1.0
+  img_loss_weight: 0.5
+  force_full_attention_mask: true
+  mask_entire_modality: 0.1
+
+loader:
+  pin_memory: false
+  num_workers: 4
+  num_eval_workers: 4
+  
+lr_scheduler:
+  num_warmup_steps: 5000
+
+model:
+  linear_factor: 2

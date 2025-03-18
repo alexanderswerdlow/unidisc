@@ -1,0 +1,15 @@
+# @package _global_
+
+backbone: elm
+
+data:
+  tokenizer_name_or_path: NousResearch/Llama-2-7b-hf
+
+model:
+  use_lora: false
+  full_attention: true
+  model_id: apple/OpenELM-270M # apple/OpenELM-1_1B
+
+trainer:
+  use_gradient_checkpointing: false
+  sd3_compile_config: false

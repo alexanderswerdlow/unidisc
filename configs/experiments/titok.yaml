@@ -1,0 +1,8 @@
+# @package _global_
+
+data:
+  resolution: 256
+  downscale_ratio: 16
+
+model:
+  vae_type: titok

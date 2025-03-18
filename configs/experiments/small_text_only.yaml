@@ -1,0 +1,28 @@
+# @package _global_
+
+defaults:
+  - lsun_text8_exp_2
+  - owt_only
+  - override /model: small
+
+backbone: dit
+
+loader:
+  batch_size: 64
+
+trainer:
+  val_check_interval: 10000
+  ckpt_steps: 10000
+  softmin_snr: null
+
+optim:
+  fused: true
+  weight_decay: 0.03
+
+sampling:
+  num_sample_batches: 4
+  max_sampling_steps: 256
+
+model:
+  txt_length: 1024
+  

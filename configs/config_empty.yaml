@@ -1,0 +1,8 @@
+defaults:
+  - _self_
+  - /model: small
+  - /experiments: []
+
+# from omegaconf import OmegaConf
+# with open("config.yaml", "w") as fp:
+#   OmegaConf.save(config=config, f=fp.name)

@@ -1,0 +1,21 @@
+# @package _global_
+
+mode: eval
+
+loader:
+  batch_size: 16
+  eval_batch_size: 16
+
+trainer:
+  disable_all_eval_generation: false
+
+eval:
+  compute_generative_perplexity: true
+  generate_samples: true
+  num_sample_batches: 20
+  log_every_n_fid: 1
+  log_every_n_evals: 1
+  compute_standalone_mauve: true
+  mauve_num_samples: 5000
+  # mauve_divergence_curve_discretization_size: 200 # works well for our repo
+  # mauve_scaling_factor: 2 # works well for our repo

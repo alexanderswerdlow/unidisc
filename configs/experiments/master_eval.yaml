@@ -1,0 +1,49 @@
+# @package _global_
+
+mode: eval
+
+eval:
+  fid_samples: 4096
+  max_num_fid_batches_per_device: ${eval:'max(${eval.fid_samples} // (${trainer.devices} * ${loader.eval_batch_size}), 1)'}
+  compute_generative_perplexity: true
+  generate_samples: true
+  log_every_n_fid: 1
+  log_every_n_evals: 1
+  class_conditional_fid: false
+  txt_conditional_fid: true
+  calculate_clip_score: true
+  cfg: 5
+  num_sample_batches: 2
+  compute_standalone_mauve: false
+  mauve_num_samples: -1
+  set_random_gen_seed: true
+  # gen_ppl_eval_model_name_or_path: 'meta-llama/Meta-Llama-3-8B'
+  compute_img_to_txt_mauve_clip: true
+  compute_img_to_txt_mauve_during_unconditional_fid: true
+  force_eval_uncond: true
+  ablation_config: true
+  compute_val_metrics_standalone: true
+  num_val_metrics_standalone_samples: 2000
+
+trainer:
+  disable_all_eval_generation: false
+  force_after_eos_padding: true
+
+model:
+  image_model_fid_eval: true
+  use_kv_cache: ${is_ar:${parameterization}}
+
+loader:
+  batch_size: 64
+  eval_batch_size: 64
+  num_workers: 0
+  num_eval_workers: 1
+
+sampling:
+  steps: ${model.length}
+  max_sampling_steps: ${sampling.steps}
+  sampling_step_frac: null
+
+
+data:
+  fid_dataset: null

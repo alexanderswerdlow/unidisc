@@ -1,0 +1,29 @@
+# @package _global_
+
+mode: zero-shot-eval
+
+data:
+  # train: "nlphuji/flickr30k"
+  train: "facebook/winoground"
+  precache: False
+  tokenizers_parallelism: False # parallelism causes some weird error
+  n_val_samples: 2048
+  block_size: 128
+  disable_text_modality: false
+
+eval:
+  cfg: 5
+  compute_val_metrics_standalone: false
+  compute_img_to_txt_mauve_clip: false
+
+loader:
+  batch_size: 16
+  eval_batch_size: 16
+
+
+model:
+  unified_model: True
+  text_model: true
+  image_model: true
+  vae_type: magvit
+  force_optimized_native_attn: false

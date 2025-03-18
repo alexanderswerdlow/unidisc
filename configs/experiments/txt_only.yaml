@@ -1,0 +1,21 @@
+# @package _global_
+
+data:
+  streaming: False
+  unpaired: false
+
+trainer:
+  img_loss_weight: null
+  text_loss_weight: null
+  
+model:
+  use_pretrained_img_emb: false
+  image_model_fid_eval: false
+  unified_model: false
+  image_model: false
+  txt_length: 256
+  img_length: 0
+
+eval:
+  log_every_n_evals: -1
+  log_every_n_fid: -1

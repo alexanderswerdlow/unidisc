@@ -1,0 +1,51 @@
+# @package _global_
+
+defaults:
+  - override /model: medium
+  - override /lr_scheduler: cosine_with_hard_restarts_schedule_with_warmup
+
+loader:
+  batch_size: 16
+  eval_batch_size: 16
+  desired_global_batch_size: 128
+  num_workers: 4
+
+trainer:
+  ckpt_steps: 5000
+  val_check_interval: 100
+  use_legacy_update_batch_fn: true
+  mask_txt_only: true
+  mask_entire_modality: 0.15
+  ema: 0.9999
+  use_custom_ema: true
+  force_enable_checkpointing: true
+  skip_early_checkpointing: false
+  force_after_eos_padding: false
+
+checkpointing:
+  checkpoints_total_limit: 20
+
+lr_scheduler:
+  num_warmup_steps: 10000
+  num_training_steps: 400000
+  num_cycles: 80
+
+data:
+  resolution: 256
+  train: cub2011_custom
+  use_weighted_tensordict_sampler: false
+
+model:
+  vae_type: titok128
+  txt_length: 18
+  img_length: 128
+  rope_2d: false
+  force_text_vocab_size: 5450
+  text_vocab_size: 5451
+  image_vocab_size: 8192
+  attn_dropout: 0.1
+
+optim:
+  lr: 1.0e-04
+  weight_decay: 0.2
+  beta2: 0.99

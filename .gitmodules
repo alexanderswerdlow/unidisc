@@ -1,0 +1,15 @@
+[submodule "third_party/LlamaGen"]
+	path = third_party/LlamaGen
+	url = https://github.com/alexanderswerdlow/LlamaGen.git
+	branch = wip_v1
+[submodule "third_party/Lumina-mGPT"]
+	path = third_party/Lumina-mGPT
+	url = https://github.com/alexanderswerdlow/Lumina-mGPT.git
+	branch = non_causal
+[submodule "third_party/Show-o"]
+	path = third_party/Show-o
+	url = https://github.com/showlab/Show-o.git
+[submodule "third_party/1d-tokenizer"]
+	path = third_party/1d-tokenizer
+	url = https://github.com/bytedance/1d-tokenizer.git
+	branch = main

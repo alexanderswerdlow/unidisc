@@ -1,0 +1,12 @@
+name: medium
+type: ddit
+hidden_size: 1024
+cond_dim: 128
+length: 1024
+base_n_blocks: 24
+# We try to roughly match parameter count
+n_blocks: ${adjust_n_blocks:}
+n_heads: 16
+scale_by_sigma: True
+dropout: 0.1
+tie_word_embeddings: False

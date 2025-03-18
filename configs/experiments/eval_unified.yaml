@@ -1,0 +1,27 @@
+# @package _global_
+
+mode: eval
+devices: ${device_count:}
+
+sampling:
+  steps: 500
+  max_sampling_steps: 1000
+
+loader:
+  batch_size: 6
+  eval_batch_size: 6
+
+trainer:
+  fsdp: false
+  disable_all_eval_generation: false
+
+eval:
+  perplexity_batch_size: 6
+  num_masking_viz_batches: 12
+  log_every_n_evals: 1
+  num_uncond_sample_batches: 5
+  num_sample_batches: 2
+  num_random_masking: 3
+  masking_batch_size: 6
+  cfg: 6.0
+  generate_samples: false
