@@ -1,0 +1,21 @@
+# @package _global_
+  
+data:
+  disable_text_modality: false
+  keep_hf_dataset_in_memory: true
+  aggressive_aug: false
+  n_duplicate_train: null
+  n_duplicate_val: null
+  data_dir_train: []
+  data_dir_val: []
+  image_data_train: ${data.image_data_val}
+  image_data_val:
+    - val: sayakpaul/coco-30-val-2014
+      weight: -1
+      name: mscoco_val
+      tokenize_vqvae_in_dataloader: false
+      raw_images: true
+
+eval:
+  compute_generative_perplexity: true
+  generate_samples: true

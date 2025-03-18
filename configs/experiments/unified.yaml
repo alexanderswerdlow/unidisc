@@ -1,0 +1,23 @@
+# @package _global_
+
+data:
+  zero_shot_eval_dataset: "nlphuji/flickr30k"
+  precache: False
+  tokenizers_parallelism: False # parallelism causes some weird error
+  n_val_samples: 2048
+  block_size: 128
+
+model:
+  unified_model: True
+  text_model: true
+
+checkpointing:
+  resume_from_ckpt: True
+  load_from_text_model: "ckpts/unidisc-owt/model.safetensors"
+
+loader:
+  batch_size: 12
+
+trainer:
+  val_check_interval: 2000
+  log_seperate_modal_losses: true

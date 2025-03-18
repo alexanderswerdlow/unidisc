@@ -1,0 +1,18 @@
+# @package _global_
+
+mode: eval
+debug: true
+
+eval:
+  max_num_fid_batches_per_device: ${eval:'4096 // (${trainer.devices} * ${loader.eval_batch_size})'}
+  compute_generative_perplexity: false
+  generate_samples: false
+  log_every_n_fid: 1
+  log_every_n_evals: 1
+
+loader:
+  eval_batch_size: 32
+
+sampling:
+  steps: 500
+  max_sampling_steps: 500

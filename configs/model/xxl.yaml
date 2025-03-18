@@ -1,0 +1,10 @@
+name: xxl
+type: ddit
+hidden_size: 4096
+cond_dim: 128
+length: 1024
+n_blocks: 30
+n_heads: 16
+scale_by_sigma: True
+dropout: 0.1
+tie_word_embeddings: False

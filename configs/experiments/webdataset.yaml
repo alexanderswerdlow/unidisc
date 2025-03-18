@@ -1,0 +1,12 @@
+# @package _global_
+
+data:
+  train: datacomp1b_indexed
+  valid: ${.train}
+  
+  iterable: false
+  webdataset_iterable: false
+  webdataset_indexed: true
+  unpaired: false
+  dataset_type: null
+  tokens_flip_collate: false

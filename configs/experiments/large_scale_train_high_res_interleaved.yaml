@@ -1,0 +1,105 @@
+
+# @package _global_
+
+data:
+  move_tensordict_to_shm: false
+  enable_cuda_in_tensordict_collate: false
+  force_mp_spawn: false
+  resolution: 512
+  add_text_to_weighted_sampler: false
+
+  add_image_gen_tokens: true
+  use_packing_collate: true
+  dynamic_packing_lengths: true
+  remove_txt_img_padding: true
+  require_sample_ids: true
+  block_size: ${model.length}
+  disable_mask_after_eos: true
+  add_image_token: true
+  use_slow_tokenizer: true
+  force_seed: true
+
+  data_dir_train:
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/matrix/HPDv2_image_reward_v1_v2_v3/train
+      weight: 0.5
+      name: HPDv2_image_reward_v1_v2_v3 # 3593248
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/grogu/pick_score_sac_prompts_v1_v2_v3_512
+      weight: 1.0
+      name: pick_score_sac_prompts_v1_v2_v3_512 # 9330810
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/pixelprose_tokens
+      weight: 1.0
+      name: pixelprose_tokens # 6627589
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/babel/cambrian_10m_v5
+      weight: 1.0
+      name: cambrian_10m_v5 # 8215264
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/scratch_ssd_tokens/datacomp1b_7_512
+      weight: 1.0
+      name: datacomp1b_7_512 # 23955209
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_2_tokens
+      weight: 0.5
+      name: datacomp_1b_datacomp1b_2_tokens # 10161505
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_4_tokens
+      weight: 0.5
+      name: datacomp_1b_datacomp1b_4_tokens # 27895717
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/babel/mmc4_fewer_faces_v0
+      weight: 2.0
+      name: mmc4_fewer_faces_v0 # 22605524
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_5_tokens
+      weight: 0.5
+      name: datacomp_1b_datacomp1b_5_tokens
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_0_tokens
+      weight: 0.5
+      name: datacomp_1b_datacomp1b_0_tokens
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_1_tokens
+      weight: 0.5
+      name: datacomp_1b_datacomp1b_1_tokens
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/babel/cosmopedia_2_v0
+      weight: 1.0
+      name: cosmopedia_v2
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/babel/fineweb_edu_dedup_v0
+      weight: 1.0
+      name: fineweb_edu_dedup
+  data_dir_val:
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/matrix/gecko_eval_512
+      weight: 1.0
+      name: gecko_eval_512
+    
+trainer:
+  text_loss_weight: 1.0
+  img_loss_weight: 0.2
+  mask_entire_modality: 0.2
+
+  force_full_attention_mask: false
+  force_full_attention_mask_loss_only: false
+  disable_all_eval_generation: true
+  interleaved: true
+  interleaved_training_flex_attention: true
+  force_convert_to_dict: true
+  val_check_interval: -1
+  use_gradient_checkpointing: true
+  disable_all_checkpointing: false
+  set_max_txt_loss_ratio: true
+  gradient_clip_val: 1.0
+  skip_early_checkpointing: false
+  bypass_load_from_state_dicts_if_resuming: true
+
+loader:
+  num_workers: 4
+  num_eval_workers: 4
+  
+lr_scheduler:
+  num_warmup_steps: 5000
+
+model:
+  linear_factor: 2
+  use_flex_attention: true
+  use_spda_attn: true
+  
+  length: 1536
+  txt_length: ${.length}
+  img_length: ${.length}
+  
+eval:
+  generate_samples: false
+  disable_visualization: true
+

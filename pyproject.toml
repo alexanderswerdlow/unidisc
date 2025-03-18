@@ -1,0 +1,109 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+sources = ["unidisc"]
+
+[tool.uv]
+package = false
+default-groups = ["dev", "misc"]
+no-build-isolation-package = ["flash-attn"]
+
+[project]
+name = "unidisc"
+version = "0.0.1"
+authors = [{ name="Alexander Swerdlow", email="aswerdlow1@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "setuptools>=75.8.0",
+  "torch>=2.6.0",
+  "torchvision>=0.21.0",
+  "diffusers~=0.32.2",
+  "transformers~=4.49.0",
+  "datasets~=3.2.0",
+  "numpy~=2.2",
+  "tensordict~=0.7.2",
+  "accelerate~=1.5.2",
+  "lightning_utilities~=0.12.0",
+  "hydra-core~=1.3.2",
+  "omegaconf~=2.3.0",
+  "torchtnt~=0.2.4",
+  "jaxtyping~=0.2.37",
+  "einops~=0.8.0",
+  "timm~=1.0.15",
+  "wandb~=0.19.6",
+  "image_utilities==0.0.3*",
+  "typer~=0.15.1",
+  "torchmetrics==1.6.1",
+  "rich~=13.9.4",
+  "fsspec",
+  "pandas",
+  "ml_collections",
+  "scikit-learn",
+  "torchinfo",
+  "sentencepiece",
+  "hf_transfer",
+  "ipdb",
+  "ipython",
+  "lovely-tensors",
+]
+
+[dependency-groups]
+dev = [
+  "peft",
+  "braceexpand",
+  "h5py",
+  "pynvml",
+  "evaluate",
+  "mauve-text",
+  "clean-fid",
+  "hpsv2x==1.2.0",
+  "open_clip_torch",
+  "T2IBenchmark",
+  "clip",
+  "python-fasthtml~=0.12.1",
+  "MonsterUI~=0.0.34",
+  "fastapi~=0.115.8",
+  "flash-attn~=2.7.4",
+]
+misc = [
+  "flask",
+  "werkzeug",
+  "sentence_transformers",
+  "opencv-python",
+  "lpips",
+  "simple_slurm",
+  "ftfy",
+  "bitsandbytes",
+  "requests",
+  "deepspeed",
+]
+# Not important and can be difficult to install.
+# This may be easier: `uv pip install fairseq --no-deps`
+# hard = [
+#   "fairseq",
+#   "langchain~=0.3.17",
+#   "langchain_core~=0.3.15",
+#   "langchain_groq~=0.2.1",
+# ]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },]
+torchvision = [{ index = "pytorch-cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },]
+webdataset = { git = "ssh://git@github.com/alexanderswerdlow/webdataset.git", rev = "67d1d487dc1a9aa6aaf81e6712deaec29c1ae3d3" }
+submitit = { git = "ssh://git@github.com/alexanderswerdlow/submitit.git", rev = "eb6368c068a9a64e9f09c9128b47c39a81add324" }
+T2IBenchmark = { git = "ssh://git@github.com/boomb0om/text2image-benchmark.git", rev = "532229f679d7e97ecba61914db7276f95733e707" }
+clip = { git = "ssh://git@github.com/openai/CLIP.git", rev = "dcba3cb2e2827b402d2701e7e1c7d9fed8a20ef1" }
+# hydra-core = { git = "ssh://git@github.com/alexanderswerdlow/hydra.git", branch = "working_ci" }
+# hydra-submitit-launcher = { git = "ssh://git@github.com/alexanderswerdlow/hydra.git", branch = "working_ci", subdirectory = "plugins/hydra_submitit_launcher" }
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[tool.black]
+line-length = 150
+target-version = ['py310']

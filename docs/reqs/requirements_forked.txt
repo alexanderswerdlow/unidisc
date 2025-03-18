@@ -1,0 +1,4 @@
+git+ssh://git@github.com/alexanderswerdlow/webdataset.git@wip
+git+ssh://git@github.com/alexanderswerdlow/submitit.git
+git+ssh://git@github.com/alexanderswerdlow/image_utils.git@wip_v1
+git+https://github.com/huggingface/diffusers.git

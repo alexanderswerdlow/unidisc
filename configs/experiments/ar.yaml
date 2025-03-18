@@ -1,0 +1,10 @@
+# @package _global_
+
+parameterization: ar
+
+trainer:
+  ar_shift: true
+
+model:
+  full_attention: false
+  use_flex_attention: false

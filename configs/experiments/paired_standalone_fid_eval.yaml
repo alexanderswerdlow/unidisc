@@ -1,0 +1,29 @@
+# @package _global_
+
+mode: eval
+debug: true
+
+eval:
+  fid_samples: 4096
+  max_num_fid_batches_per_device: ${eval:'max(${eval.fid_samples} // (${trainer.devices} * ${loader.eval_batch_size}), 1)'}
+  compute_generative_perplexity: false
+  generate_samples: false
+  log_every_n_fid: 1
+  log_every_n_evals: 1
+  class_conditional_fid: false
+  txt_conditional_fid: true
+  calculate_clip_score: true
+  cfg: 5
+
+model:
+  image_model_fid_eval: true
+
+loader:
+  eval_batch_size: 32
+
+sampling:
+  steps: ${model.length}
+  max_sampling_steps: ${model.length}
+
+data:
+  keep_hf_dataset_in_memory: false

@@ -1,0 +1,51 @@
+# @package _global_
+
+debug: true
+seed: 163
+
+loader:
+  eval_batch_size: 1
+  batch_size: 1
+
+data:
+  move_tensordict_to_shm: false
+  resolution: 1024
+  disable_mask_after_eos: true
+  disable_packing: true
+  data_dir_val:
+    - dir: ${oc.env:DIFFUSION_DATA_DIR}/tokens/matrix/HPDv2_image_reward_v1_v2_v3/train
+      weight: 1.0
+      name: HPDv2_image_reward_512
+
+model:
+  img_length: 4096
+  txt_length: 1024
+  length: 5120
+
+trainer:
+  compile: false
+  limit_val_batches: 2
+  fsdp: false
+  force_full_attention_mask: true
+  force_null_sigma: true
+  allow_null_sigma: true
+  
+eval:
+  num_sample_batches: 1
+  num_random_masking: 0
+  num_masking_viz_batches: 0
+  limit_val_batches_manual: 1
+  num_uncond_sample_batches: 10
+  eval_large_batch: 10
+  val_with_train_data: false
+  maskgit_r_temp: 4.5
+  half_uncond: false
+  cfg: 3.0
+  return_interleaved_modalities_split: true
+  static_img_txt_demo: true
+  visualize_sample: true
+
+sampling:
+  steps: 50
+  max_sampling_steps: 50
+  predictor: "maskgit"

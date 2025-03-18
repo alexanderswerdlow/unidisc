@@ -1,0 +1,25 @@
+# @package _global_
+  
+data:
+  disable_text_modality: false
+  keep_hf_dataset_in_memory: true
+  aggressive_aug: false
+  n_duplicate_train: null
+  n_duplicate_val: null
+  data_dir_train: []
+  data_dir_val: []
+  fid_dataset: sayakpaul/coco-30-val-2014
+  train: combined_tokens
+  val: {.train}
+  image_data_val:
+    - val: ${data.fid_dataset}
+      weight: -1
+      name: ${.val}
+      tokenize_vqvae_in_dataloader: false
+      raw_images: true
+  image_data_train:
+    - train: ${data.fid_dataset}
+      weight: -1
+      name: ${.train}
+      tokenize_vqvae_in_dataloader: false
+      raw_images: true

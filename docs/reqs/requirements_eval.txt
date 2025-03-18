@@ -1,0 +1,7 @@
+evaluate
+mauve-text
+clean-fid
+hpsv2
+open_clip_torch
+git+https://github.com/boomb0om/text2image-benchmark
+git+https://github.com/openai/CLIP.git

@@ -1,0 +1,10 @@
+name: extra_large
+type: ddit
+hidden_size: 2048
+cond_dim: 128
+length: 1024
+n_blocks: 24
+n_heads: 16
+scale_by_sigma: True
+dropout: 0.1
+tie_word_embeddings: False

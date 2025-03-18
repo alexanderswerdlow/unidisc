@@ -1,0 +1,30 @@
+# @package _global_
+
+data:
+  use_token_dataset: true
+  disable_mask_after_eos: true
+  move_tensordict_to_shm: false
+
+trainer:
+  compile_flag_pos_emb: true
+  multimodal_batches: true
+  allow_null_sigma: true
+
+eval:
+  num_sample_batches: 1
+  num_random_masking: 0
+  num_masking_viz_batches: 0
+  limit_val_batches_manual: 1
+  num_uncond_sample_batches: 10
+  eval_large_batch: 10
+  val_with_train_data: false
+  maskgit_r_temp: 4.5
+  half_uncond: false
+  cfg: 3.0
+  static_img_txt_demo: true
+  visualize_sample: true
+
+sampling:
+  steps: 50
+  max_sampling_steps: 50
+  predictor: "maskgit"

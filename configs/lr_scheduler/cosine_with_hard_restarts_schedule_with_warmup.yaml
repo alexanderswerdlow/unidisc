@@ -1,0 +1,4 @@
+_target_: transformers.get_cosine_with_hard_restarts_schedule_with_warmup
+num_warmup_steps: 2500
+num_training_steps: 1000000
+num_cycles: 1

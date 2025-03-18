@@ -1,0 +1,9 @@
+# @package _global_
+
+model:
+  downscale_ratio: 16
+  image_vocab_size: 8192
+  vae_type: magvit
+  use_custom_vae_ckpt: null
+  custom_vae_name: null
+  img_length: ${eval:'(${data.resolution} // ${model.downscale_ratio})**2'}
