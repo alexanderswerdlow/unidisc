@@ -11,4 +11,4 @@ We support the following datasets:
 - MMC4
 - PixelProse
 
-Additionally, we generated our own synthetic dataset and provide the [generation scripts](unidisc/datasets/preprocessing/unidisc_dataset/README.md) as well as the raw data.
+Additionally, we generated our own synthetic dataset available [here](https://huggingface.co/datasets/aswerdlow/unidisc_hq) and provide the [generation scripts](../unidisc/datasets/preprocessing/unidisc_dataset/README.md) as well as the raw data.

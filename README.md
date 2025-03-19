@@ -18,10 +18,11 @@
   
 </div>
 
-## Hugging Face models and annotations
+## Hugging Face models
 
-The UniDisc checkpoints are available on [Hugging Face](https://huggingface.co/unidisc):
-* [unidisc/todo](https://huggingface.co/unidisc/todo)
+The UniDisc checkpoints are available on Hugging Face:
+* [Interleaved Image-Text](https://huggingface.co/aswerdlow/unidisc_interleaved)
+* [Non-Interleaved (Static)](https://huggingface.co/aswerdlow/unidisc_non_interleaved)
 
 ## Getting Started
 
@@ -34,9 +35,13 @@ uv sync
 
 For a more detailed installation guide, please refer to [INSTALL.md](docs/INSTALL.md).
 
+## Data
+
+See [DATA.md](docs/DATA.md) for details on how to download and preprocess the datasets. We provide processing scripts and instructions for all of the used datasets. Additionally, we release a synthetic dataset available [here](https://huggingface.co/datasets/aswerdlow/unidisc_hq) and the corresponding [generation scripts](unidisc/datasets/preprocessing/unidisc_dataset/README.md) as well as the raw data.
+
 ## Training
 
-See [TRAIN.md](docs/TRAIN.md) for details.
+See [TRAIN.md](docs/TRAIN.md) for training commands.
 
 ## Inference
 
@@ -47,7 +52,7 @@ TODO
 <!-- <img src="docs/todo.png" width="1000"> -->
 
 
-Interactive demo for **TODO**.
+Interactive demo:
 ```
 python demo/server.py
 python demo/client_simple_fasthtml.py
