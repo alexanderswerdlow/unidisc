@@ -12,7 +12,7 @@
 
 <sup>1</sup> Carnegie Mellon University&nbsp;
  
-[![ArXiv](https://img.shields.io/badge/ArXiv-<0000.00000>-<COLOR>.svg)](https://arxiv.org/abs/2503.20853) [![Webpage](https://img.shields.io/badge/Webpage-UniDisc-<COLOR>.svg)](https://unidisc.github.io/) 
+[![ArXiv](https://img.shields.io/badge/ArXiv-<2503.20853>-<COLOR>.svg)](https://arxiv.org/abs/2503.20853) [![Webpage](https://img.shields.io/badge/Webpage-UniDisc-<COLOR>.svg)](https://unidisc.github.io/) 
 
 <!-- [![Demo](https://img.shields.io/badge/Demo-Custom-<COLOR>.svg)](https://huggingface.co/spaces/todo) -->
   
