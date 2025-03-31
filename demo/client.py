@@ -13,9 +13,9 @@ SHOW_DEV_BUTTONS = True
 DEMO_DIR = Path(__file__).parent
 ADD_DEV_FORM = True
 
-def list_ckpt_files():
+def list_ckpt_files(dir: Path):
     """List all files in the ckpts directory."""
-    ckpt_dir = Path("ckpts").absolute()
+    ckpt_dir = dir.absolute()
     files = []
     
     if ckpt_dir.exists():
@@ -25,8 +25,8 @@ def list_ckpt_files():
     
     return sorted(files)
 
-print(f"CKPT files: {list_ckpt_files()}")
-
+print(f"CKPT files: {list_ckpt_files(Path('ckpts'))}")
+print(f"Demo assets: {list_ckpt_files(DEMO_DIR / "assets")}")
 
 DEMOS = [
     {

@@ -5,7 +5,6 @@ vqgan/vqgan_pretrained/
 vqgan/vqgan_taming_ckpt/
 data/
 models/datasets/.cache/
-*.json
 output/
 tmp*
 multirun/
