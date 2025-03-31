@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 
+print("here0")
+
 UNIDISC_DIR = Path(os.getenv("UNIDISC_DIR", Path(__file__).parent))
 LIB_DIR = UNIDISC_DIR / "third_party"
 CELEBV_DATA_DIR = Path(os.getenv("CELEBV_DATA_DIR", "/home/mprabhud/aswerdlo/repos/lib/CelebV-Text/downloaded_celebvtext"))
@@ -10,6 +12,7 @@ HF_TOKEN = os.getenv("HF_TOKEN", os.getenv("HF_HUB_DATASETS_TOKEN"))
 HF_DATASETS_CACHE = os.getenv("HF_DATASETS_CACHE", None)
 HF_CACHE_DIR = os.getenv("HF_HOME", None)
 
+print("here1")
 if HF_CACHE_DIR is not None:
     HF_CACHE_DIR = Path(HF_CACHE_DIR)
 elif HF_DATASETS_CACHE is not None:
@@ -21,3 +24,5 @@ try:
         CELEBV_DATA_DIR = SCRATCH_CELEBV_DATA_DIR
 except:
     print(f"Error setting CELEBV_DATA_DIR")
+
+print("here2")
