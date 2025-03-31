@@ -55,17 +55,17 @@ RUN mkdir -p /home/appuser/.cache/transformers /home/appuser/tmp /home/appuser/.
 
 RUN chmod -R 777 /tmp
 
+RUN mkdir -p ./ckpts/unidisc_interleaved
+RUN HF_HUB_ENABLE_HF_TRANSFER=1 uvx --with hf_transfer --from huggingface_hub huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
+
 # Copy application code
 COPY --chown=appuser demo demo
 COPY --chown=appuser unidisc unidisc
 COPY --chown=appuser models models
 COPY --chown=appuser configs configs
 COPY --chown=appuser third_party third_party
-# COPY --chown=appuser ckpts ckpts
 COPY --chown=appuser ./__* ./
 COPY --chown=appuser ./*.py ./
-RUN mkdir -p ./ckpts/unidisc_interleaved
-RUN HF_HUB_ENABLE_HF_TRANSFER=1 uvx --with hf_transfer --from huggingface_hub huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
 
 # Switch to non-root user
 USER appuser
