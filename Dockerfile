@@ -61,10 +61,11 @@ COPY --chown=appuser unidisc unidisc
 COPY --chown=appuser models models
 COPY --chown=appuser configs configs
 COPY --chown=appuser third_party third_party
-COPY --chown=appuser ckpts ckpts
+# COPY --chown=appuser ckpts ckpts
 COPY --chown=appuser ./__* ./
 COPY --chown=appuser ./*.py ./
-# RUN huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
+RUN mkdir -p ./ckpts/unidisc_interleaved
+RUN huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
 
 # Switch to non-root user
 USER appuser
