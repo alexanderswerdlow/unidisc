@@ -66,6 +66,7 @@ COPY --chown=appuser configs configs
 COPY --chown=appuser third_party third_party
 COPY --chown=appuser ./__* ./
 COPY --chown=appuser ./*.py ./
+RUN ln -s ckpts/unidisc_interleaved/vq_ds16_t2i.pt ./ckpts/vq_ds16_t2i.pt
 
 # Switch to non-root user
 USER appuser
