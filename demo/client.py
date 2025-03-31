@@ -1,21 +1,37 @@
+print(f"Import 00")
 from fasthtml.common import *
 from fasthtml.svg import *
 from monsterui.all import *
+print(f"Import 01")
 from pathlib import Path
 import requests
 import base64
 from PIL import Image
+print(f"Import 02")
 import numpy as np
 import io
 import json
 
-print(f"Finished import 0")
+
 
 SHOW_DEV_BUTTONS = True
 DEMO_DIR = Path(__file__).parent
 ADD_DEV_FORM = True
 
-print(f"Finished import 1. Demo dir: {DEMO_DIR}")
+def list_ckpt_files():
+    """List all files in the ckpts directory."""
+    ckpt_dir = Path("ckpts").absolute()
+    files = []
+    
+    if ckpt_dir.exists():
+        for file_path in ckpt_dir.glob("**/*"):
+            if file_path.is_file() or file_path.is_symlink():
+                files.append(str(file_path))
+    
+    return sorted(files)
+
+print(f"CKPT files: {list_ckpt_files()}")
+
 
 DEMOS = [
     {

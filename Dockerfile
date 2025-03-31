@@ -80,4 +80,4 @@ EXPOSE 5003
 CMD ["bash", "demo/demo.sh"]
 
 # DOCKER_BUILDKIT=1 docker build --ssh default --network=host -t unidisc .
-# docker run --network=host -it -p 5003:5003 unidisc
+# docker run --gpus all --network=host -it -p 5003:5003 unidisc
