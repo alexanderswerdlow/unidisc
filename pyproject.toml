@@ -92,12 +92,12 @@ misc = [
 [tool.uv.sources]
 torch = [{ index = "pytorch-cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },]
 torchvision = [{ index = "pytorch-cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },]
-webdataset = { git = "ssh://git@github.com/alexanderswerdlow/webdataset.git", rev = "67d1d487dc1a9aa6aaf81e6712deaec29c1ae3d3" }
-submitit = { git = "ssh://git@github.com/alexanderswerdlow/submitit.git", rev = "eb6368c068a9a64e9f09c9128b47c39a81add324" }
-T2IBenchmark = { git = "ssh://git@github.com/boomb0om/text2image-benchmark.git", rev = "532229f679d7e97ecba61914db7276f95733e707" }
-clip = { git = "ssh://git@github.com/openai/CLIP.git", rev = "dcba3cb2e2827b402d2701e7e1c7d9fed8a20ef1" }
-# hydra-core = { git = "ssh://git@github.com/alexanderswerdlow/hydra.git", branch = "working_ci" }
-# hydra-submitit-launcher = { git = "ssh://git@github.com/alexanderswerdlow/hydra.git", branch = "working_ci", subdirectory = "plugins/hydra_submitit_launcher" }
+webdataset = { git = "https://github.com/alexanderswerdlow/webdataset.git", rev = "67d1d487dc1a9aa6aaf81e6712deaec29c1ae3d3" }
+submitit = { git = "https://github.com/alexanderswerdlow/submitit.git", rev = "eb6368c068a9a64e9f09c9128b47c39a81add324" }
+T2IBenchmark = { git = "https://github.com/boomb0om/text2image-benchmark.git", rev = "532229f679d7e97ecba61914db7276f95733e707" }
+clip = { git = "https://github.com/openai/CLIP.git", rev = "dcba3cb2e2827b402d2701e7e1c7d9fed8a20ef1" }
+# hydra-core = { git = "https://github.com/alexanderswerdlow/hydra.git", branch = "working_ci" }
+# hydra-submitit-launcher = { git = "https://github.com/alexanderswerdlow/hydra.git", branch = "working_ci", subdirectory = "plugins/hydra_submitit_launcher" }
 
 [[tool.uv.index]]
 name = "pytorch-cu124"
