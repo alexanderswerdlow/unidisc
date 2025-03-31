@@ -9,9 +9,13 @@ import numpy as np
 import io
 import json
 
+print(f"Finished import 0")
+
 SHOW_DEV_BUTTONS = True
-DEMO_DIR = Path("demo")
+DEMO_DIR = Path(__file__).parent
 ADD_DEV_FORM = True
+
+print(f"Finished import 1. Demo dir: {DEMO_DIR}")
 
 DEMOS = [
     {
@@ -656,5 +660,5 @@ def post(
 
     return output_content
 
-
+print(f"Before serve...")
 serve(port=5003)
