@@ -65,7 +65,7 @@ COPY --chown=appuser third_party third_party
 COPY --chown=appuser ./__* ./
 COPY --chown=appuser ./*.py ./
 RUN mkdir -p ./ckpts/unidisc_interleaved
-RUN huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
+RUN HF_HUB_ENABLE_HF_TRANSFER=1 uvx --with hf_transfer --from huggingface_hub huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
 
 # Switch to non-root user
 USER appuser
