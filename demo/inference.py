@@ -386,7 +386,16 @@ def inference(
             disable_mask_after_eos=True
         )
 
-        img_samples_list = torch.cat(img_samples_list, dim=0)
+        text_samples_list = [x.replace("You are a highly intelligent multimodal AI with the ability to analyze and generate images.", "").removeprefix(" ") for x in text_samples_list]
+        if isinstance(img_samples_list[0], Image.Image):
+            img_tensors = []
+            for img in img_samples_list:
+                img_tensor = torch.tensor(np.array(img)).permute(2, 0, 1).float() / 255.0
+                img_tensors.append(img_tensor.unsqueeze(0))
+            img_samples_list = torch.cat(img_tensors, dim=0)
+        else:
+            img_samples_list = torch.cat(img_samples_list, dim=0)
+
         reward_config = config.eval.auto_enhance_reward_config
         rewards, raw_rewards = model.get_rewards(reward_config, img_samples_list, text_samples_list, batch=gen_batch, return_raw_rewards=True)
 
