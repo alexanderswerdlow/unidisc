@@ -45,19 +45,13 @@ See [TRAIN.md](docs/TRAIN.md) for training commands.
 
 ## Inference
 
-<!-- Inference demo for **TODO**.
-```
-TODO
-``` -->
-<!-- <img src="docs/todo.png" width="1000"> -->
-
-
 Interactive demo:
+```bash
+mkdir -p ./ckpts/unidisc_interleaved
+huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
+uv run demo/server.py experiments='[large_scale_train,large_scale_train_high_res_interleaved,eval_unified,large_scale_high_res_interleaved_inference]' trainer.load_from_state_dict="./ckpts/unidisc_interleaved/unidisc_interleaved.pt"
+uv run demo/client.py
 ```
-python demo/server.py
-python demo/client_simple_fasthtml.py
-```
-
 
 ## Training
 
@@ -71,11 +65,12 @@ See [EVAL.md](docs/EVAL.md) for details.
 ### Citation
 To cite our work, please use the following:
 ```
-@article{TODO,
-  title={TODO},
-  author={TODO},
-  journal={arXiv preprint arXiv:TODO},
-  year={TODO}
+@article{swerdlow2025unidisc,
+  title = {Unified Multimodal Discrete Diffusion},
+  author = {Swerdlow, Alexander and Prabhudesai, Mihir and Gandhi, Siddharth and Pathak, Deepak and Fragkiadaki, Katerina},
+  journal = {arXiv preprint arXiv:2503.20853},
+  year = {2025},
+  doi = {10.48550/arXiv.2503.20853},
 }
 ```
 

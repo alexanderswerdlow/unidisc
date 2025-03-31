@@ -571,16 +571,17 @@ def post(
     port: int | None = 8001,
     reward_models: str | None = "False"
 ):
-    messages = []
+    payload_messages = []
     if user_input:
-        messages.append({"type": "text", "text": user_input})
+        payload_messages.append({"role": "user", "content": [{"type": "text", "text": user_input}]})
 
+    image_message_content = []
     current_image = None
     if uploaded_file is not None and uploaded_file.filename != "No image":
         current_image = process(Image.open(io.BytesIO(uploaded_file.file.read())), int(resolution))
         img_data = encode_image(current_image)["url"]
 
-        messages.append({
+        image_message_content.append({
             "type": "image_url",
             "image_url": {"url": img_data},
             "is_mask": False
@@ -589,11 +590,14 @@ def post(
         if mask_data is not None and len(mask_data) > 0:
             mask_array = get_boolean_mask(mask_data)
             mask_data_url = encode_array_image(mask_array)["url"]
-            messages.append({
+            image_message_content.append({
                 "type": "image_url",
                 "image_url": {"url": mask_data_url},
                 "is_mask": True
             })
+
+    if image_message_content:
+        payload_messages.append({"role": "assistant", "content": image_message_content})
 
     config_payload = {
         "max_tokens": int(max_tokens),
@@ -608,7 +612,7 @@ def post(
     }
 
     payload = {
-        "messages": [{"role": "user", "content": messages}],
+        "messages": payload_messages,
         "model": "unidisc",
         **config_payload
     }

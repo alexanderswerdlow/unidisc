@@ -12,7 +12,7 @@ from types import FrameType
 from contextlib import nullcontext
 
 import transformers
-from constants import HF_TOKEN, HF_CACHE_DIR
+from constants import HF_TOKEN, HF_CACHE_DIR, UNIDISC_DIR
 import hydra
 import hydra.utils
 import torch
@@ -599,6 +599,12 @@ def set_accelerator(self, accelerator, ckpt_path=None):
 
     def _load(obj, path, update_fn=None, key="model"):
         _ckpt_path = Path(path)
+
+        if not _ckpt_path.is_absolute() and not _ckpt_path.exists():
+            potential_path = UNIDISC_DIR / _ckpt_path
+            rprint(f"Relative path '{_ckpt_path}' not found. Trying path relative to script directory: '{potential_path}'")
+            _ckpt_path = potential_path
+
         if _ckpt_path.is_dir() and (_ckpt_path / "model.safetensors").exists():
             _ckpt_path = _ckpt_path / "model.safetensors"
             path = str(_ckpt_path)
@@ -635,7 +641,7 @@ def set_accelerator(self, accelerator, ckpt_path=None):
                 gprint(f"Loaded state dict from {path}")
                 # obj.load_state_dict(state_dict[key])
         else:
-            state_dict = torch.load(path)
+            state_dict = torch.load(_ckpt_path)
         
         if 'model' in state_dict and len(state_dict) < 10:
             state_dict = state_dict['model']
