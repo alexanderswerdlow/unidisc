@@ -25,8 +25,8 @@ def list_ckpt_files(dir: Path):
     
     return sorted(files)
 
-print(f"CKPT files: {list_ckpt_files(Path('ckpts'))}")
-print(f"Demo assets: {list_ckpt_files(DEMO_DIR / "assets")}")
+print(f'CKPT files: {list_ckpt_files(Path("ckpts"))}')
+print(f'Demo assets: {list_ckpt_files(DEMO_DIR / "assets")}')
 
 DEMOS = [
     {

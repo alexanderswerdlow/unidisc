@@ -37,12 +37,12 @@ RUN pip install --upgrade pip \
 # Create a non-root user
 RUN useradd -m -u 1000 appuser
 
+RUN git clone -b docker_wip https://github.com/alexanderswerdlow/unidisc.git /home/appuser/app
+RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+
 # Set working directory
 WORKDIR /home/appuser/app
-
-# Copy dependency files and install dependencies
-COPY --chown=appuser pyproject.toml uv.lock README.md ./ 
-RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 RUN --mount=type=ssh uv sync --no-group dev
 RUN --mount=type=ssh uv sync --frozen --no-cache \
@@ -57,15 +57,6 @@ RUN chmod -R 777 /tmp
 
 RUN mkdir -p ./ckpts/unidisc_interleaved
 RUN HF_HUB_ENABLE_HF_TRANSFER=1 uvx --with hf_transfer --from huggingface_hub huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved --revision 2b344ca856bd108b52a2d022a3463dace131249f
-
-# Copy application code
-COPY --chown=appuser demo demo
-COPY --chown=appuser unidisc unidisc
-COPY --chown=appuser models models
-COPY --chown=appuser configs configs
-COPY --chown=appuser third_party third_party
-COPY --chown=appuser ./__* ./
-COPY --chown=appuser ./*.py ./
 
 RUN ln -s ckpts/unidisc_interleaved/vq_ds16_t2i.pt ckpts/vq_ds16_t2i.pt
 RUN chown -h appuser:appuser ckpts/vq_ds16_t2i.pt
