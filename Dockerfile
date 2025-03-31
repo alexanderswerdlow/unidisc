@@ -64,7 +64,7 @@ COPY --chown=appuser third_party third_party
 COPY --chown=appuser ckpts ckpts
 COPY --chown=appuser ./__* ./
 COPY --chown=appuser ./*.py ./
-COPY --chown=appuser ./archive/pytorch_model_fsdp.bin ./
+# RUN huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
 
 # Switch to non-root user
 USER appuser
