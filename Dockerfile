@@ -67,10 +67,11 @@ COPY --chown=appuser third_party third_party
 COPY --chown=appuser ./__* ./
 COPY --chown=appuser ./*.py ./
 
+RUN ln -s ckpts/unidisc_interleaved/vq_ds16_t2i.pt ckpts/vq_ds16_t2i.pt
+RUN chown -h appuser:appuser ckpts/vq_ds16_t2i.pt
+
 # Switch to non-root user
 USER appuser
-
-RUN ln -s ckpts/unidisc_interleaved/vq_ds16_t2i.pt ckpts/vq_ds16_t2i.pt
 
 # Expose port for Gradio
 EXPOSE 5003
