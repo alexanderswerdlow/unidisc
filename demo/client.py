@@ -1,18 +1,13 @@
-print(f"Import 00")
 from fasthtml.common import *
 from fasthtml.svg import *
 from monsterui.all import *
-print(f"Import 01")
 from pathlib import Path
 import requests
 import base64
 from PIL import Image
-print(f"Import 02")
 import numpy as np
 import io
 import json
-
-
 
 SHOW_DEV_BUTTONS = True
 DEMO_DIR = Path(__file__).parent
