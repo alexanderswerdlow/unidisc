@@ -56,7 +56,7 @@ RUN mkdir -p /home/appuser/.cache/transformers /home/appuser/tmp /home/appuser/.
 RUN chmod -R 777 /tmp
 
 RUN mkdir -p ./ckpts/unidisc_interleaved
-RUN HF_HUB_ENABLE_HF_TRANSFER=1 uvx --with hf_transfer --from huggingface_hub huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved
+RUN HF_HUB_ENABLE_HF_TRANSFER=1 uvx --with hf_transfer --from huggingface_hub huggingface-cli download aswerdlow/unidisc_interleaved --local-dir ./ckpts/unidisc_interleaved --revision 2b344ca856bd108b52a2d022a3463dace131249f
 
 # Copy application code
 COPY --chown=appuser demo demo
