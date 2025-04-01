@@ -479,16 +479,23 @@ def get(session):
 
 @rt("/load_demo/{demo_index}")
 def post(demo_index: int, session):
+    print(f"Called load demo: {demo_index}")
     demo = DEMOS[demo_index]
     if 'image' in demo:
+        _path = Path(demo['image'])
+        print(f"{_path}, exists: {_path.exists()}")
         session['demo_image'] = encode_image(process(Image.open(demo['image'])))['url']
     if 'text' in demo:
         session['demo_text'] = demo['text']
 
     if 'mask' in demo and demo['mask'] and Path(demo['mask']).exists():
+        _path = Path(demo['mask'])
+        print(f"json: {_path}, exists: {_path.exists()}")
         session['demo_mask'] = json.loads(Path(demo['mask']).read_text())
     else:
         session['demo_mask'] = None
+
+    print(f"Loaded data")
 
     content = create_input_card_content(
         text_content=session['demo_text'],
@@ -562,6 +569,8 @@ def post(demo_index: int, session):
         }};
         img.src = {json.dumps(session.get('demo_image', ''))};
     """))
+
+    print(f"Before return")
 
     return Card(
         Div(*content),
