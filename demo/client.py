@@ -1,4 +1,3 @@
-from turtle import heading
 from fasthtml.common import *
 from fasthtml.svg import *
 from monsterui.all import *
@@ -141,13 +140,17 @@ def get(session):
         demo_image_url = None
         if 'image' in demo:
             demo_image_url = encode_image(process(Image.open(demo['image'])))['url']
-            print(f"Demo image URL: {demo_image_url}")
+
+        if 'mask' in demo and demo['mask'] and Path(demo['mask']).exists():
+            demo_mask = json.loads(Path(demo['mask']).read_text())
+        else:
+            demo_mask = None
 
         print(f"Demo: {demo}")
         
         inner_content = Div(
             Div(
-                heading(cls="hidden", htmx_indicator=True),
+                Loading(cls="hidden", htmx_indicator=True),
                 id=f"demo-spinner-{DEMOS.index(demo)}",
                 cls="absolute inset-0 flex items-center justify-center"
             ),
@@ -182,7 +185,7 @@ def get(session):
             if(target) target.querySelector('.loading').classList.add('hidden');
         }});
 
-        const demoMaskData = {json.dumps(session.get('demo_mask'))} || undefined;
+        const demoMaskData = {json.dumps(demo_mask)} || undefined;
         if (typeof demoMaskData !== 'undefined' && demoMaskData !== null) {{
             const maskInfo = JSON.parse(demoMaskData);
             const data = atob(maskInfo.data);
@@ -295,21 +298,6 @@ def get(session):
             const previewContainer = document.getElementById('preview-container');
             previewContainer.innerHTML = ''; // Clear canvas and image
             document.getElementById('mask-data').value = ''; // Clear mask data
-            
-            // If there's a demo image, re-initialize it
-            const demoImg = {json.dumps(session.get('demo_image', ''))};
-            if (demoImg) {{
-                const img = new Image();
-                img.onload = function() {{
-                    const wrapper = document.createElement('div');
-                    wrapper.style.position = 'relative';
-                    wrapper.style.display = 'inline-block';
-                    initializeCanvas(img, wrapper);
-                    wrapper.appendChild(img);
-                    previewContainer.appendChild(wrapper);
-                }};
-                img.src = demoImg;
-            }}
         }}
         // Helper function to square crop an image (crop centered)
         function squareCropImage(img) {{
@@ -496,25 +484,23 @@ def post(demo_index: int, session):
     demo = DEMOS[demo_index]
     if 'image' in demo:
         _path = Path(demo['image'])
-        print(f"{_path}, exists: {_path.exists()}")
-        session['demo_image'] = encode_image(process(Image.open(demo['image'])))['url']
+        demo_image = encode_image(process(Image.open(demo['image'])))['url']
     if 'text' in demo:
-        session['demo_text'] = demo['text']
+        demo_text = demo['text']
 
     if 'mask' in demo and demo['mask'] and Path(demo['mask']).exists():
-        _path = Path(demo['mask'])
-        print(f"json: {_path}, exists: {_path.exists()}")
-        session['demo_mask'] = json.loads(Path(demo['mask']).read_text())
+        demo_mask = json.loads(Path(demo['mask']).read_text())
     else:
-        session['demo_mask'] = None
+        demo_mask = None
 
     print(f"Loaded data")
+    print(f"demo_image: {demo_image[:50]}")
 
     content = create_input_card_content(
-        text_content=session['demo_text'],
+        text_content=demo_text,
     )
 
-    mask_json = 'undefined' if not session['demo_mask'] else json.dumps(session['demo_mask'])
+    mask_json = 'undefined' if not demo_mask else json.dumps(demo_mask)
     content.append(Script(fr"""
         img = new Image();
         img.onload = async function() {{
@@ -530,7 +516,7 @@ def post(demo_index: int, session):
             wrapper.appendChild(img);
             previewContainer.appendChild(wrapper);
 
-            const dataUrl = {json.dumps(session.get('demo_image', ''))};
+            const dataUrl = {json.dumps(demo_image)};
             const base64Data = dataUrl.split(',')[1];
             const byteCharacters = atob(base64Data);
             const byteArrays = [];
@@ -580,7 +566,7 @@ def post(demo_index: int, session):
                 updateMaskData(canvas);
             }}
         }};
-        img.src = {json.dumps(session.get('demo_image', ''))};
+        img.src = {json.dumps(demo_image)};
     """))
 
     print(f"Before return")
