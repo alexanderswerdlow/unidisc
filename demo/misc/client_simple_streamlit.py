@@ -12,7 +12,7 @@ from typing import Dict
 import time
 import json
 
-API_URL = "http://localhost:8000/v1/chat/completions"
+API_URL = "http://rerun.aswerdlow.com/v1/chat/completions"
 DEMO_DIR = Path("demo")
 
 def square_crop(image: Image.Image) -> Image.Image:
@@ -134,7 +134,6 @@ def load_demo_assets(demo, config):
             with demo["mask"].open("r") as f:
                 print(f"Loaded mask from {demo['mask']}")
                 st.session_state.initial_drawing = json.load(f)
-                breakpoint()
         else:
             st.warning(f"Mask not found for {demo['name']}")
             st.session_state.initial_drawing = None

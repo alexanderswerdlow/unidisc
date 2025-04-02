@@ -11,7 +11,7 @@ import io
 import uuid
 from demo.server import ChatRequest, ChatMessage, ContentPart
 
-API_URL = "http://localhost:8000/v1/chat/completions"
+API_URL = "http://rerun.aswerdlow.com/v1/chat/completions"
 
 # Encode a file on disk as a base64 data URL.
 def encode_image(file_path: Path) -> Dict[str, str]:
