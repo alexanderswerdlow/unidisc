@@ -30,6 +30,10 @@ print(f'Demo assets: {list_ckpt_files(DEMO_DIR / "assets")}')
 
 DEMOS = [
     {
+        "name": "T2I",
+        "text": "A first <m> this is a test.",
+    },
+    {
         "name": "Dog",
         "image": DEMO_DIR / "assets" / "dog.jpg",
         "mask": DEMO_DIR / "assets" / "dog.json",
@@ -132,9 +136,12 @@ def create_input_card_content(text_content=""):
 @rt("/")
 def get(session):
     demo_cards = []
-    for demo in DEMOS:
+    for i, demo in enumerate(DEMOS):
         if 'image' in demo:
             demo_image_url = encode_image(process(Image.open(demo['image'])))['url']
+            print(f"Demo image URL: {demo_image_url}")
+
+        print(f"Demo: {demo}")
         
         inner_content = Div(
             Div(
