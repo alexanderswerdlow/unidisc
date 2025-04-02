@@ -56,6 +56,10 @@ DEMOS = [
     {
         "name": "T2I",
         "text": "A <m> sits at the counter of an art-deco loungebar, drinking whisky from a tumbler glass.",
+    },
+    {
+        "name": "T2I",
+        "text": "A <m> this is a test.",
     }
 ]
 
