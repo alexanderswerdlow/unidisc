@@ -1,3 +1,4 @@
+from turtle import heading
 from fasthtml.common import *
 from fasthtml.svg import *
 from monsterui.all import *
@@ -137,6 +138,7 @@ def create_input_card_content(text_content=""):
 def get(session):
     demo_cards = []
     for i, demo in enumerate(DEMOS):
+        demo_image_url = None
         if 'image' in demo:
             demo_image_url = encode_image(process(Image.open(demo['image'])))['url']
             print(f"Demo image URL: {demo_image_url}")
@@ -145,15 +147,15 @@ def get(session):
         
         inner_content = Div(
             Div(
-                Loading(cls="hidden", htmx_indicator=True),
+                heading(cls="hidden", htmx_indicator=True),
                 id=f"demo-spinner-{DEMOS.index(demo)}",
                 cls="absolute inset-0 flex items-center justify-center"
             ),
-            Div(
+            *([Div(
                 Img(src=demo_image_url,
                     cls="w-32 h-32 object-cover rounded-md transition-opacity hover:opacity-60 cursor-pointer mb-3"),
                 cls="demo-image-container relative flex justify-center"
-            ),
+            )] if demo_image_url is not None else []),
             P(demo['text'],
               cls="mt-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors text-center"),
             cls="flex flex-col items-center p-1"
