@@ -30,10 +30,6 @@ print(f'Demo assets: {list_ckpt_files(DEMO_DIR / "assets")}')
 
 DEMOS = [
     {
-        "name": "T2I",
-        "text": "A first <m> this is a test.",
-    },
-    {
         "name": "Dog",
         "image": DEMO_DIR / "assets" / "dog.jpg",
         "mask": DEMO_DIR / "assets" / "dog.json",
@@ -61,10 +57,6 @@ DEMOS = [
         "name": "T2I",
         "text": "A <m> sits at the counter of an art-deco loungebar, drinking whisky from a tumbler glass.",
     },
-    {
-        "name": "T2I",
-        "text": "A <m> this is a test.",
-    }
 ]
 
 # Use MonsterUI's theme headers.
@@ -85,15 +77,27 @@ def process(image: Image.Image, desired_resolution: int = 512) -> Image.Image:
 
 def encode_image(file: Path | io.BytesIO | Image.Image) -> Dict[str, str]:
     if isinstance(file, Image.Image):
+        # Use PNG format if the image has transparency (RGBA mode from masking)
+        # Otherwise use JPEG
+        img_format = "PNG" if file.mode == 'RGBA' else "JPEG"
+        mime_type = f"image/{img_format.lower()}"
         buffered = io.BytesIO()
-        file.save(buffered, format="JPEG")
+        # Ensure image is in the correct mode for saving
+        # Convert RGBA to RGB before saving as JPEG (loses transparency)
+        save_image = file.convert("RGB") if img_format == "JPEG" else file
+        save_image.save(buffered, format=img_format)
         base64_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
     elif isinstance(file, Path):
         with file.open("rb") as img_file:
             base64_str = base64.b64encode(img_file.read()).decode("utf-8")
-    else:
+        # Determine mime type based on file extension for simplicity
+        ext = file.suffix.lower()
+        mime_type = "image/png" if ext == ".png" else "image/jpeg" # Default to jpeg
+    else: # io.BytesIO
         base64_str = base64.b64encode(file.getvalue()).decode("utf-8")
-    return {"url": f"data:image/jpeg;base64,{base64_str}"}
+        # Cannot easily determine mime type here without reading headers/using PIL
+        mime_type = "image/jpeg" # Default assumption
+    return {"url": f"data:{mime_type};base64,{base64_str}"}
 
 
 def encode_array_image(array: np.ndarray) -> Dict[str, str]:
@@ -137,17 +141,80 @@ def create_input_card_content(text_content=""):
 def get(session):
     demo_cards = []
     for i, demo in enumerate(DEMOS):
-        demo_image_url = None
-        if 'image' in demo:
-            demo_image_url = encode_image(process(Image.open(demo['image'])))['url']
+        image_to_encode: Image.Image | None = None
+        processed_img: Image.Image | None = None
+        demo_mask_json_str: str | None = None # Store original mask json for JS
 
-        if 'mask' in demo and demo['mask'] and Path(demo['mask']).exists():
-            demo_mask = json.loads(Path(demo['mask']).read_text())
-        else:
-            demo_mask = None
+        # 1. Load and process image if it exists
+        if 'image' in demo:
+            try:
+                img = Image.open(demo['image'])
+                processed_img = process(img) # Process resizes (e.g., to 512x512)
+                image_to_encode = processed_img # Default image to encode later
+            except FileNotFoundError:
+                print(f"Warning: Image file not found for demo {i}: {demo['image']}")
+                continue # Skip this demo if image is missing
+            except Exception as e:
+                print(f"Warning: Error processing image for demo {i}: {e}")
+                continue # Skip this demo on other image errors
+
+        # 2. Load mask if it exists and apply it to the processed image
+        if processed_img is not None and 'mask' in demo and demo['mask']:
+             mask_path = Path(demo['mask'])
+             if mask_path.exists():
+                 try:
+                     # Load mask data as string for JS and decode for processing
+                     mask_content = mask_path.read_text()
+                     demo_mask_json_str = mask_content # Keep original json string for JS
+                     mask_info = json.loads(mask_content)
+
+                     # Decode the mask data into a boolean numpy array
+                     mask_array_original = get_boolean_mask(mask_content)
+
+                     # Resize mask to match processed image dimensions
+                     mask_pil = Image.fromarray(mask_array_original.astype(np.uint8) * 255)
+                     # Use NEAREST to avoid anti-aliasing on the boolean mask
+                     resized_mask_pil = mask_pil.resize(processed_img.size, Image.NEAREST)
+                     resized_mask_array = np.array(resized_mask_pil).astype(bool)
+
+                     # Convert image to RGBA to handle transparency
+                     img_rgba = processed_img.convert("RGBA")
+                     img_array = np.array(img_rgba)
+
+                     # Apply mask by setting pixels to black where mask is True
+                     img_array[resized_mask_array, 3] = 255  # Full opacity
+                     img_array[resized_mask_array, 0] = 0    # Red channel to 0
+                     img_array[resized_mask_array, 1] = 0    # Green channel to 0
+                     img_array[resized_mask_array, 2] = 0    # Blue channel to 0
+
+                     # Update the image to be encoded with the masked version
+                     image_to_encode = Image.fromarray(img_array, 'RGBA')
+
+                 except json.JSONDecodeError:
+                     print(f"Warning: Invalid JSON in mask file for demo {i}: {mask_path}")
+                     demo_mask_json_str = None # Ensure JS gets null if mask invalid
+                 except Exception as e:
+                     print(f"Warning: Error processing mask for demo {i}: {e}")
+                     demo_mask_json_str = None # Ensure JS gets null on other mask errors
+             else:
+                 print(f"Warning: Mask file not found for demo {i}: {mask_path}")
+
+
+        # 3. Encode the (potentially masked) image for display
+        demo_image_url = None
+        if image_to_encode is not None:
+            demo_image_url = encode_image(image_to_encode)['url']
+        elif 'image' in demo:
+             # This case means image existed but failed processing earlier
+             print(f"Warning: Could not generate image URL for demo {i}")
 
         print(f"Demo: {demo}")
         
+        # Pass the original mask JSON string (or 'undefined') to JS for canvas interaction
+        # This allows the canvas overlay to show/edit the mask area, even if the
+        # underlying image displayed initially is already pre-masked.
+        js_mask_data = demo_mask_json_str if demo_mask_json_str is not None else 'undefined'
+
         inner_content = Div(
             Div(
                 Loading(cls="hidden", htmx_indicator=True),
@@ -185,9 +252,9 @@ def get(session):
             if(target) target.querySelector('.loading').classList.add('hidden');
         }});
 
-        const demoMaskData = {json.dumps(demo_mask)} || undefined;
+        const demoMaskData = {js_mask_data};
         if (typeof demoMaskData !== 'undefined' && demoMaskData !== null) {{
-            const maskInfo = JSON.parse(demoMaskData);
+            const maskInfo = demoMaskData;
             const data = atob(maskInfo.data);
             const arr = new Uint8Array(data.length);
             for (let i = 0; i < data.length; i++) {{
